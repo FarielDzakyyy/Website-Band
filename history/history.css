@@ -1,0 +1,262 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #1c1c1c;
+  color: #fff;
+  line-height: 1.7;
+}
+
+/* History Section */
+.history {
+  padding: 0px 10%;
+}
+
+.history-header {
+  text-align: center;
+  background: #a86a3d;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 60px;
+}
+
+.history-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.history-header p {
+  font-size: 1.2em;
+}
+
+.history-header .orange {
+  color: #ff9900;
+}
+
+.history-header .blue {
+  color: #ff9900;
+}
+
+.history-img {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.history-img img {
+  max-width: 100%;
+  border-radius: 15px;
+}
+
+.history-text {
+  font-size: 1.05em;
+}
+
+.history-text ul {
+  margin: 15px 0 25px 20px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 15px 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 12px;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  background: #c96;
+  border-radius: 4px;
+}
+
+
+
+.logo-img {
+    height: 55px; /* Logo lebih besar, navbar tetap */
+    /* Jika perlu, tambahkan vertical-align agar logo tetap rata tengah */
+    vertical-align: middle;
+}
+
+footer {
+    background-color: #fff;
+    padding: 40px;
+    font-size: 0.95em;
+    color: #222;
+    border-top: 1px solid #eee;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.footer-left {
+    flex: 2;
+    min-width: 250px;
+}
+
+.footer-left .footer-logo {
+    width: 40px;
+    margin-bottom: 10px;
+}
+
+.footer-left hr {
+    margin: 15px 0;
+    border: none;
+    border-top: 1px solid #aaa;
+    width: 60%;
+}
+
+.footer-center {
+    flex: 1.2;
+    min-width: 200px;
+}
+
+.footer-center h4 {
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.social-icons img {
+    width: 28px;
+    height: 28px;
+    background-color: #efece7;
+    padding: 6px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+footer {
+  background: #222;
+  color: #fff;
+  padding: 30px 50px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer-left {
+  flex: 2;
+  min-width: 250px;
+}
+
+.footer-left img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.footer-left p {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.footer-left hr {
+  border: none;
+  border-top: 1px solid #777;
+  margin: 10px 0;
+}
+
+.footer-left small {
+  font-size: 13px;
+  color: #ccc;
+}
+
+.footer-center {
+  flex: 1;
+  min-width: 180px;
+}
+
+.footer-center h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.social-icons img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+.footer-center p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 150px;
+}
+
+.footer-right h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-right li {
+  margin-bottom: 8px;
+}
+
+.footer-right a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.footer-right a:hover {
+  color: #c96;
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.9em;
+  color: #ede8e8;
+}
