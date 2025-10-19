@@ -41,16 +41,18 @@ body {
 }
 
 .logo-img {
-  height: 55px;
-  vertical-align: middle;
+    height: 55px; /* Logo lebih besar, navbar tetap */
+    /* Jika perlu, tambahkan vertical-align agar logo tetap rata tengah */
+    vertical-align: middle;
 }
 
-/* ========== Gallery Section ========== */
-.gallery {
+/* ========== Merch Section ========== */
+/* Section Merch */
+.merch {
   padding: 10px 10%;
 }
 
-.gallery-header {
+.merch-header {
   text-align: center;
   background: #a86a3d;
   padding: 3px;
@@ -58,56 +60,87 @@ body {
   margin-bottom: 60px;
 }
 
-.gallery-header h1 {
+.merch-header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
 }
 
-.gallery-header p {
+.merch-header p {
   font-size: 1.2em;
+}
+
+.merch-header .orange {
+  color: #ff9900;
+}
+
+.merch-header .pink {
+  color: #ff6a3d;
+}
+
+.merch-header p {
+  font-size: 18px;
   margin-bottom: 40px;
 }
 
-/* Grid layout responsif */
-.gallery-container {
+/* Grid layout */
+.merch-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  max-width: 1000px;
+  grid-template-columns: repeat(4, 1fr); /* 4 kolom desktop */
+  gap: 50px 80px;
+  justify-items: center;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Item galeri */
-.gallery-item {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 8px;
+/* Tablet */
+@media (max-width: 768px) {
+  .merch-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom tablet */
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .merch-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 kolom mobile */
+  }
+}
+
+/* Kartu produk */
+.merch-card {
+  width: 200px;
+  text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gallery-item:hover {
+.merch-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-.gallery-item img {
-  width: 100%;
-  height: 100%;
+/* Gambar produk */
+.merch-img {
+  width: 200px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px;
+  background-color: #111;
+  border: 5px solid #b88965;
 }
 
-/* Responsif */
-@media (max-width: 768px) {
-  .gallery-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Nama produk */
+.merch-card h3 {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #d3a379;
 }
 
-@media (max-width: 480px) {
-  .gallery-container {
-    grid-template-columns: 1fr;
-  }
+/* Harga */
+.merch-card p {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
 }
 
 footer {
