@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dua Serupa Admin Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa" />
+      <h2>Dua Serupa</h2>
+      <small>Admin Panel</small>
+    </div>
+
+    <ul class="menu">
+      <li class="active"><span>🏠</span> Dashboard</li>
+      <li><span>🎤</span> Member</li>
+      <li><span>📜</span> History</li>
+      <li><span>🎶</span> Music</li>
+      <li><span>🗓️</span> Agenda</li>
+      <li><span>🖼️</span> Gallery</li>
+      <li><span>🛍️</span> Merch</li>
+      <li><span>📩</span> Booking</li>
+    </ul>
+
+    <button class="logout">🚪 Logout</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <h1>Dashboard Admin</h1>
+      <div class="admin-info">
+        <p>👤 Admin: <strong>Dua Serupa Team</strong></p>
+      </div>
+    </header>
+
+    <!-- Cards -->
+    <section class="cards">
+      <div class="card">
+        <h3>Total Booking</h3>
+        <p class="value">42</p>
+      </div>
+      <div class="card">
+        <h3>Total Event</h3>
+        <p class="value">12</p>
+      </div>
+      <div class="card">
+        <h3>Member Aktif</h3>
+        <p class="value">3</p>
+      </div>
+      <div class="card">
+        <h3>Merch Terjual</h3>
+        <p class="value">157</p>
+      </div>
+    </section>
+
+    <!-- Booking Table -->
+    <section class="table-section">
+      <h2>Booking Terbaru</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Tipe Acara</th>
+            <th>Tanggal</th>
+            <th>Lokasi</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Rizky Mahendra</td>
+            <td>Festival</td>
+            <td>12 Nov 2025</td>
+            <td>Jakarta</td>
+            <td><span class="status pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>Sarah Amalia</td>
+            <td>Private Event</td>
+            <td>20 Nov 2025</td>
+            <td>Bandung</td>
+            <td><span class="status confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td>Bagas Saputra</td>
+            <td>Konser</td>
+            <td>5 Des 2025</td>
+            <td>Yogyakarta</td>
+            <td><span class="status cancelled">Cancelled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
