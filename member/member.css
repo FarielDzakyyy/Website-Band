@@ -50,16 +50,13 @@ body {
 
 /* ========== Member Section ========== */
 /* Section Member */
-.member {
-  padding: 10px 10%;
-}
-
 .member-header {
   text-align: center;
   background: #a86a3d;
-  padding: 3px;
+  padding: 5px 20px;
   border-radius: 8px;
-  margin-bottom: 60px;
+  margin: 9px auto 40px auto;
+  max-width: 1630px;
 }
 
 .member-header h1 {
@@ -69,6 +66,7 @@ body {
 
 .member-header p {
   font-size: 1.2em;
+  margin-bottom: 40px;
 }
 
 .member-header .orange {
@@ -78,12 +76,6 @@ body {
 .member-header .blue {
   color: #ff9900;
 }
-
-.member-header p {
-  font-size: 18px;
-  margin-bottom: 40px;
-}
-
 /* Grid layout */
 /* Grid layout */
 .member-container {

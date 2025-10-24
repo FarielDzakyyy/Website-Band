@@ -13,16 +13,13 @@ body {
 }
 
 /* History Section */
-.history {
-  padding: 0px 10%;
-}
-
 .history-header {
   text-align: center;
   background: #a86a3d;
-  padding: 20px;
+  padding: 5px 20px;
   border-radius: 8px;
-  margin-bottom: 60px;
+  margin: 9px auto 40px auto;
+  max-width: 1630px;
 }
 
 .history-header h1 {
@@ -32,6 +29,7 @@ body {
 
 .history-header p {
   font-size: 1.2em;
+  margin-bottom: 40px;
 }
 
 .history-header .orange {

@@ -48,16 +48,13 @@ body {
 
 /* ========== Merch Section ========== */
 /* Section Merch */
-.merch {
-  padding: 10px 10%;
-}
-
 .merch-header {
   text-align: center;
   background: #a86a3d;
-  padding: 3px;
+  padding: 5px 20px;
   border-radius: 8px;
-  margin-bottom: 60px;
+  margin: 9px auto 40px auto;
+  max-width: 1630px;
 }
 
 .merch-header h1 {
@@ -67,19 +64,15 @@ body {
 
 .merch-header p {
   font-size: 1.2em;
+  margin-bottom: 40px;
 }
 
 .merch-header .orange {
   color: #ff9900;
 }
 
-.merch-header .pink {
-  color: #ff6a3d;
-}
-
-.merch-header p {
-  font-size: 18px;
-  margin-bottom: 40px;
+.merch-header .blue {
+  color: #ff9900;
 }
 
 /* Grid layout */

@@ -46,16 +46,13 @@ body {
 }
 
 /* ========== Gallery Section ========== */
-.gallery {
-  padding: 10px 10%;
-}
-
 .gallery-header {
   text-align: center;
   background: #a86a3d;
-  padding: 3px;
+  padding: 5px 20px;
   border-radius: 8px;
-  margin-bottom: 60px;
+  margin: 9px auto 40px auto;
+  max-width: 1630px;
 }
 
 .gallery-header h1 {
@@ -66,6 +63,14 @@ body {
 .gallery-header p {
   font-size: 1.2em;
   margin-bottom: 40px;
+}
+
+.gallery-header .orange {
+  color: #ff9900;
+}
+
+.gallery-header .blue {
+  color: #ff9900;
 }
 
 /* Grid layout responsif */

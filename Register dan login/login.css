@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3eeee;
+}
+
+.container {
+  display: flex;
+  width: 768px;
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.login-section {
+  flex: 1;
+  background-color: #000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-section h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 15px;
+  border: 1.5px solid #c9a98f;
+}
+
+.input-group .icon {
+  font-size: 18px;
+  margin-right: 8px;
+  color: #6b5b53;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 15px;
+  color: #333;
+  background: transparent;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #6b5b53;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #8d7b6e;
+}
+
+.alt-option {
+  text-align: center;
+  margin-top: 20px;
+  color: #fff;
+}
+
+.alt-option p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.alt-option a {
+  color: #3a82f7;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.alt-option a:hover {
+  text-decoration: underline;
+}
+
+
+.side-section {
+  flex: 0.5;
+  background-color: #b1845a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 60px;
+  font-family: "Old English Text MT", cursive;
+}
+
+.logo-img {
+  width: 200px;          /* ukuran logo */
+  height: auto;           /* biar proporsional */
+  filter: brightness(0) invert(1); /* ubah ke putih jika logonya hitam */
+}

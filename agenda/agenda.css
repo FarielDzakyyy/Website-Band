@@ -65,6 +65,14 @@ body {
   margin-bottom: 40px;
 }
 
+.agenda-header .orange {
+  color: #ff9900;
+}
+
+.agenda-header .blue {
+  color: #ff9900;
+}
+
 /* Agenda List */
 .agenda-list {
   padding: 20px 10%;
