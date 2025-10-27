@@ -142,7 +142,11 @@ body {
 .news-container {
   display: flex;
   gap: 20px;
+  width: 80%;           /* batasi lebar agar tidak full */
+  margin-left: 10%;      /* geser sedikit ke kanan, jadi agak menengah */
+  align-items: flex-start;
 }
+
 
 .main-news img {
   width: 300px;

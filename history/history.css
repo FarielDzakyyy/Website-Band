@@ -15,11 +15,12 @@ body {
 /* History Section */
 .history-header {
   text-align: center;
-  background: #a86a3d;
+  background: none;       /* hapus background coklat */
   padding: 5px 20px;
   border-radius: 8px;
   margin: 9px auto 40px auto;
   max-width: 1630px;
+  color: #e9e5e3;         /* ubah warna teks jadi coklat */
 }
 
 .history-header h1 {
@@ -32,13 +33,15 @@ body {
   margin-bottom: 40px;
 }
 
+/* Warna kata khusus */
 .history-header .orange {
-  color: #ff9900;
+  color: #e9e5e3;   /* coklat lembut */
 }
 
 .history-header .blue {
-  color: #ff9900;
+  color: #e9e5e3;   /* samakan agar konsisten */
 }
+
 
 .history-img {
   text-align: center;
@@ -46,17 +49,28 @@ body {
 }
 
 .history-img img {
-  max-width: 100%;
+  width: 30%;            /* atur agar lebih kecil dari lebar layar */
+  max-width: 700px;      /* batasi ukuran maksimum */
   border-radius: 15px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
+
 .history-text {
+  width: 90%;              /* tidak selebar layar penuh */
+  margin-left: 5%;        /* geser sedikit ke tengah */
+ /* text-align: justify;     /* biar rapi kiri-kanan */
   font-size: 1.05em;
+  line-height: 1.8;
+  color: #ebe5e5;
+  padding: 0 20px 60px;    /* jarak dalam teks */
 }
 
 .history-text ul {
-  margin: 15px 0 25px 20px;
+  margin: 15px 0 25px 40px;
 }
+
+
 
 /* Navbar */
 .navbar {
@@ -258,3 +272,4 @@ footer {
   font-size: 0.9em;
   color: #ede8e8;
 }
+

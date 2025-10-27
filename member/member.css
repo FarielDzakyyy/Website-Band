@@ -52,11 +52,12 @@ body {
 /* Section Member */
 .member-header {
   text-align: center;
-  background: #a86a3d;
+  background: none;       /* hapus background coklat */
   padding: 5px 20px;
   border-radius: 8px;
   margin: 9px auto 40px auto;
   max-width: 1630px;
+  color: #e9e5e3;         /* ubah warna teks jadi coklat */
 }
 
 .member-header h1 {
@@ -70,11 +71,11 @@ body {
 }
 
 .member-header .orange {
-  color: #ff9900;
+  color: #e9e5e3;
 }
 
 .member-header .blue {
-  color: #ff9900;
+  color: #e9e5e3;
 }
 /* Grid layout */
 /* Grid layout */

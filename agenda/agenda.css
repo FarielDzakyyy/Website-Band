@@ -48,11 +48,12 @@ body {
 /* Agenda Header */
 .agenda-header {
   text-align: center;
-  background: #a86a3d;
+  background: none;       /* hapus background coklat */
   padding: 5px 20px;
   border-radius: 8px;
   margin: 9px auto 40px auto;
   max-width: 1630px;
+  color: #e9e5e3;         /* ubah warna teks jadi coklat */
 }
 
 .agenda-header h1 {
@@ -65,12 +66,13 @@ body {
   margin-bottom: 40px;
 }
 
+/* Warna kata khusus */
 .agenda-header .orange {
-  color: #ff9900;
+  color: #e9e5e3;   /* coklat lembut */
 }
 
 .agenda-header .blue {
-  color: #ff9900;
+  color: #e9e5e3;   /* samakan agar konsisten */
 }
 
 /* Agenda List */

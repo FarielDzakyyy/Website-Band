@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking | Dua Serupa Official</title>
+  <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+            <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa Logo" class="logo-img">
+        </div>
+      <ul class="nav-links">
+        <li><a href="../beranda/beranda.html">HOME</a></li>
+        <li><a href="../member/member.html">MEMBER</a></li>
+        <li><a href="../history/history.html">HISTORY</a></li>
+        <li><a href="../music/music.html">MUSIC</a></li>
+        <li><a href="../agenda/agenda.html">AGENDA</a></li>
+        <li><a href="../gallery/gallery.html">GALLERY</a></li>
+        <li><a href="../merch/merch.html">MERCH</a></li>
+         <li><a href="../Booking/booking.html" class="active">BOOKING</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="booking-hero">
+    <div class="hero-text">
+      <h1>Booking Dua Serupa</h1>
+      <p>Isi formulir di bawah untuk pemesanan acara, konser, atau kolaborasi dengan Dua Serupa Official.</p>
+    </div>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="booking-form">
+    <h2>Formulir Pemesanan</h2>
+    <form id="formBooking" action="#" method="post">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Aktif</label>
+        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="telepon">Nomor Telepon</label>
+        <input type="tel" id="telepon" name="telepon" placeholder="08xxxxxxxxxx" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tipeAcara">Tipe Acara</label>
+        <select id="tipeAcara" name="tipeAcara" required>
+          <option value="">-- Pilih Tipe Acara --</option>
+          <option value="konser">Konser / Event Musik</option>
+          <option value="seminar">Talkshow / Seminar</option>
+          <option value="pernikahan">Pernikahan / Private Event</option>
+          <option value="kolaborasi">Kolaborasi / Kerja Sama</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tanggal">Tanggal Acara</label>
+        <input type="date" id="tanggal" name="tanggal" required>
+      </div>
+
+      <div class="form-group">
+        <label for="lokasi">Lokasi Acara</label>
+        <input type="text" id="lokasi" name="lokasi" placeholder="Masukkan lokasi acara" required>
+      </div>
+
+      <div class="form-group">
+        <label for="pesan">Keterangan Tambahan</label>
+        <textarea id="pesan" name="pesan" rows="4" placeholder="Tambahkan detail tambahan di sini..."></textarea>
+      </div>
+
+      <button type="submit" class="btn">KIRIM PEMESANAN</button>
+    </form>
+  </section>
+
+  <!-- Contact Info -->
+  <section class="contact-info">
+    <h2>Hubungi Kami</h2>
+    <p>Jika kamu memiliki pertanyaan seputar pemesanan, silakan hubungi kontak resmi berikut:</p>
+    <div class="info-container">
+      <div class="info-box">
+        <img src="../kumpulan foto dan icon/instagram.png" alt="Instagram">
+        <p>@duaserupa.official</p>
+      </div>
+      <div class="info-box">
+        <img src="../kumpulan foto dan icon/tiktok.png" alt="TikTok">
+        <p>@duaserupa</p>
+      </div>
+      <div class="info-box">
+        <img src="../kumpulan foto dan icon/youtube.png" alt="YouTube">
+        <p>Dua Serupa Official</p>
+      </div>
+      <div class="info-box">
+        <img src="../kumpulan foto dan icon/phone.png" alt="Phone">
+        <p>0857-7840-9829</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2025 Dua Serupa Official. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="booking.js" defer></script>
+</body>
+</html>
