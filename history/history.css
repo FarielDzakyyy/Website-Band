@@ -49,8 +49,8 @@ body {
 }
 
 .history-img img {
-  width: 30%;            /* atur agar lebih kecil dari lebar layar */
-  max-width: 700px;      /* batasi ukuran maksimum */
+  width: 39%;            /* atur agar lebih kecil dari lebar layar */
+  max-width: 800px;      /* batasi ukuran maksimum */
   border-radius: 15px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }

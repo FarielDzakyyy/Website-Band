@@ -101,9 +101,35 @@ body {
 
 /* History */
 .history {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 40px;
-  background: #111;
+  background: url("../kumpulan foto dan icon/malfa.jpg") no-repeat center center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  overflow: hidden;
 }
+
+/* Overlay hitam di atas gambar saja */
+.history::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* ubah 0.5 sesuai tingkat kegelapan */
+  z-index: 0;
+}
+
+/* Pastikan teks tidak ikut gelap */
+.history > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 .history h2 {
   margin-bottom: 20px;
@@ -141,12 +167,11 @@ body {
 
 .news-container {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   width: 80%;           /* batasi lebar agar tidak full */
-  margin-left: 10%;      /* geser sedikit ke kanan, jadi agak menengah */
+  margin-left: 11%;      /* geser sedikit ke kanan, jadi agak menengah */
   align-items: flex-start;
 }
-
 
 .main-news img {
   width: 300px;
@@ -162,36 +187,57 @@ body {
 .side-news .news-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .side-news img {
-  width: 80px;
+  width: 90px;
   border-radius: 5px;
 }
 
 /* Merch */
 .merch {
-  
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 50px;
-  background: #222;
+  justify-content: center;
+  padding: 80px 50px;
   color: #fff;
+  text-align: left;
+  background: url("../kumpulan foto dan icon/ripo.jpg") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+  min-height: 100vh; /* biar full layar */
 }
 
+/* Overlay gelap untuk gambar saja */
+.merch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* ubah angka 0.5 sesuai kegelapan */
+  z-index: 0;
+}
+
+/* Supaya teks dan gambar logo tetap terang */
+.merch > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Konten kiri dan kanan */
 .merch-left img {
-  max-width: 200px; /* ukuran maksimal logo */
+  max-width: 200px;
   height: auto;
   display: block;
 }
 
 .merch-left {
-  font-size: 40px;
+  font-size: 50px;
 }
 
 .merch-right {
-  padding-left: 150px; /* kasih jarak dari kiri */
+  padding-left: 200px;
 }
 
 .merch-right h2 {

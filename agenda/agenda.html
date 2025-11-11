@@ -34,48 +34,8 @@
   </section>
 
   <!-- Agenda Section -->
-  <section class="agenda-list">
-    <div class="agenda-card">
-      <div class="agenda-date">
-        <div class="day">15</div>
-        <div class="month">JAN</div>
-      </div>
-      <div class="agenda-details">
-        <h2>Yogyakarta - Konser Malam</h2>
-        <p>Lokasi: Stadion Mandala Krida</p>
-      </div>
-      <div class="agenda-image">
-        <img src="../kumpulan foto dan icon/Foto band.jpg" alt="Foto Band">
-      </div>
-    </div>
-
-    <div class="agenda-card">
-      <div class="agenda-date">
-        <div class="day">22</div>
-        <div class="month">FEB</div>
-      </div>
-      <div class="agenda-details">
-        <h2>Solo - Festival Musik</h2>
-        <p>Lokasi: Taman Balekambang</p>
-      </div>
-      <div class="agenda-image">
-        <img src="../kumpulan foto dan icon/foto band 1.png" alt="Foto Band">
-      </div>
-    </div>
-
-    <div class="agenda-card">
-      <div class="agenda-date">
-        <div class="day">10</div>
-        <div class="month">MAR</div>
-      </div>
-      <div class="agenda-details">
-        <h2>Jakarta - Launching Album</h2>
-        <p>Lokasi: Jakarta Convention Center</p>
-      </div>
-      <div class="agenda-image">
-        <img src="../kumpulan foto dan icon/Foto band.jpg" alt="Foto Band">
-      </div>
-    </div>
+  <section class="agenda-list" id="agendaListContainer">
+  <!-- Agenda dari localStorage akan muncul di sini -->
   </section>
 
   <!-- Footer -->
@@ -128,6 +88,39 @@
 </footer>
 
   <script src="agenda.js" defer></script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("agendaListContainer");
+  const data = JSON.parse(localStorage.getItem("agendaData")) || [];
+
+  if (data.length === 0) {
+    container.innerHTML = "<p style='text-align:center;margin-top:30px;'>Belum ada agenda yang tersedia.</p>";
+    return;
+  }
+
+  data.forEach(a => {
+    const date = new Date(a.date);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("en", { month: "short" }).toUpperCase();
+
+    container.innerHTML += `
+      <div class="agenda-card">
+        <div class="agenda-date">
+          <div class="day">${day}</div>
+          <div class="month">${month}</div>
+        </div>
+        <div class="agenda-details">
+          <h2>${a.title}</h2>
+          <p>Lokasi: ${a.location}</p>
+        </div>
+        <div class="agenda-image">
+          <img src="${a.image || '../kumpulan foto dan icon/default.jpg'}" alt="Agenda Image">
+        </div>
+      </div>
+    `;
+  });
+});
+</script>
 
 </body>
 </html>

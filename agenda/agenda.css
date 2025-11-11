@@ -340,3 +340,13 @@ footer {
   font-size: 0.9em;
   color: #ede8e8;
 }
+
+/* Spasi agar footer lebih ke bawah */
+footer {
+  margin-top: 80px; /* Tambahkan jarak dari konten ke footer */
+}
+
+/* Opsional: beri ruang di bawah body agar tidak terlalu padat */
+body {
+  padding-bottom: 20px;
+}

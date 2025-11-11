@@ -36,36 +36,36 @@
     <div class="member-container">
     <div class="member-card">
       <div class="member-visual">
-        <img src="../kumpulan foto dan icon/logo ds.png" alt="Errivo" class="member-photo-img"> <img src="../kumpulan foto dan icon/Gitar.png" alt="Guitar Icon" class="instrument-icon"> </div>
+        <img src="../kumpulan foto dan icon/rivo.jpg" alt="Errivo" class="member-photo-img"> <img src="../kumpulan foto dan icon/Gitar.png" alt="Guitar Icon" class="instrument-icon"> </div>
       <h3>Errivo</h3>
       <p>Guitarist</p>
     </div>
 
     <div class="member-card">
       <div class="member-visual">
-        <img src="../kumpulan foto dan icon/logo ds.png" alt="Navarro" class="member-photo-img"> <img src="../kumpulan foto dan icon/Keyboard.png" alt="Keyboard Icon" class="instrument-icon"> </div>
+        <img src="../kumpulan foto dan icon/faro.jpg" alt="Navarro" class="member-photo-img"> <img src="../kumpulan foto dan icon/Keyboard.png" alt="Keyboard Icon" class="instrument-icon"> </div>
       <h3>Navarro</h3>
       <p>Keyboardist</p>
     </div>
 
     <div class="member-card">
       <div class="member-visual">
-        <img src="../kumpulan foto dan icon/logo ds.png" alt="Malfa" class="member-photo-img"> <img src="../kumpulan foto dan icon/Mic.png" alt="Microphone Icon" class="instrument-icon"> </div>
+        <img src="../kumpulan foto dan icon/malpa.jpg" alt="Malfa" class="member-photo-img"> <img src="../kumpulan foto dan icon/Mic.png" alt="Microphone Icon" class="instrument-icon"> </div>
       <h3>Malfa</h3>
       <p>Vocalist</p>
     </div>
 
     <div class="member-card">
       <div class="member-visual">
-        <img src="../kumpulan foto dan icon/logo ds.png" alt="Febrian" class="member-photo-img"> <img src="../kumpulan foto dan icon/drum.png" alt="Drum Icon" class="instrument-icon"> </div>
-      <h3>Febrian</h3>
+        <img src="../kumpulan foto dan icon/rara.jpg" alt="Febrian" class="member-photo-img"> <img src="../kumpulan foto dan icon/drum.png" alt="Drum Icon" class="instrument-icon"> </div>
+      <h3>Rara</h3>
       <p>Drummer</p>
     </div>
 
     <div class="member-card">
       <div class="member-visual">
-        <img src="../kumpulan foto dan icon/logo ds.png" alt="Jeremy" class="member-photo-img"> <img src="../kumpulan foto dan icon/Gitar.png" alt="Bass Icon" class="instrument-icon"> </div>
-      <h3>Jeremy</h3>
+        <img src="../kumpulan foto dan icon/lala.jpg" alt="Jeremy" class="member-photo-img"> <img src="../kumpulan foto dan icon/Gitar.png" alt="Bass Icon" class="instrument-icon"> </div>
+      <h3>Lala</h3>
       <p>Bassist</p>
     </div>
   </div>
@@ -120,7 +120,36 @@
   </div>
 </footer>
 
-<script src="member.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".member-container");
+  const members = JSON.parse(localStorage.getItem("members")) || [];
+
+  // Kalau belum ada member tersimpan, tampilkan pesan default
+  if (members.length === 0) {
+    container.innerHTML = `
+      <p style="text-align:center; color:gray;">Belum ada data member yang ditambahkan.</p>
+    `;
+    return;
+  }
+
+  // Kosongkan kontainer dulu
+  container.innerHTML = "";
+
+  // Tampilkan setiap member dari localStorage
+  members.forEach(m => {
+    container.innerHTML += `
+      <div class="member-card">
+        <div class="member-visual">
+          <img src="${m.photo || '../kumpulan foto dan icon/default.jpg'}" alt="${m.name}" class="member-photo-img">
+        </div>
+        <h3>${m.name || 'Tanpa Nama'}</h3>
+        <p>${m.role || 'Tanpa Posisi'}</p>
+      </div>
+    `;
+  });
+});
+</script>
 
 </body>
 </html>

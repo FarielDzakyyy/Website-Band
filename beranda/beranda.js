@@ -25,3 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const judul = localStorage.getItem("judulHero");
+  const deskripsi = localStorage.getItem("deskripsiHero");
+
+  if (judul) document.querySelector(".hero-text h1").innerText = judul;
+  if (deskripsi) document.querySelector(".hero-text p").innerText = deskripsi;
+});
