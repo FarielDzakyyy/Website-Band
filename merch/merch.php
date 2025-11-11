@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: ../Register dan login/login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -17,14 +24,14 @@
         <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa Logo" class="logo-img" />
       </div>
       <ul class="nav-links">
-        <li><a href="../beranda/beranda.html">HOME</a></li>
-        <li><a href="../member/member.html">MEMBER</a></li>
-        <li><a href="../history/history.html">HISTORY</a></li>
-        <li><a href="../music/music.html">MUSIC</a></li>
-        <li><a href="../agenda/agenda.html">AGENDA</a></li>
-        <li><a href="../gallery/gallery.html">GALLERY</a></li>
-        <li><a href="../merch/merch.html" class="active">MERCH</a></li>
-        <li><a href="../Booking/booking.html">BOOKING</a></li>
+        <li><a href="../beranda/beranda.php">HOME</a></li>
+        <li><a href="../member/member.php">MEMBER</a></li>
+        <li><a href="../history/history.php">HISTORY</a></li>
+        <li><a href="../music/music.php">MUSIC</a></li>
+        <li><a href="../agenda/agenda.php">AGENDA</a></li>
+        <li><a href="../gallery/gallery.php">GALLERY</a></li>
+        <li><a href="../merch/merch.php" class="active">MERCH</a></li>
+        <li><a href="../Booking/booking.php">BOOKING</a></li>
       </ul>
     </nav>
   </header>
@@ -65,19 +72,19 @@
       <div class="footer-right">
         <h4>Tentang kami</h4>
         <ul>
-          <li><a href="../history/history.html">History</a></li>
-          <li><a href="../member/member.html">Member</a></li>
-          <li><a href="../music/music.html">Music</a></li>
+          <li><a href="../history/history.php">History</a></li>
+          <li><a href="../member/member.php">Member</a></li>
+          <li><a href="../music/music.php">Music</a></li>
         </ul>
       </div>
 
       <div class="footer-right">
         <h4>Fitur</h4>
         <ul>
-          <li><a href="../member/member.html">Member</a></li>
-          <li><a href="../history/history.html">History</a></li>
-          <li><a href="../agenda/agenda.html">Agenda</a></li>
-          <li><a href="../gallery/gallery.html">Gallery</a></li>
+          <li><a href="../member/member.php">Member</a></li>
+          <li><a href="../history/history.php">History</a></li>
+          <li><a href="../agenda/agenda.php">Agenda</a></li>
+          <li><a href="../gallery/gallery.php">Gallery</a></li>
         </ul>
       </div>
     </div>

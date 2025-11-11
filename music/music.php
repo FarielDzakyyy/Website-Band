@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: ../Register dan login/login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -15,14 +22,14 @@
             <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa Logo" class="logo-img">
         </div>
       <ul class="nav-links">
-        <li><a href="../beranda/beranda.html">HOME</a></li>
-        <li><a href="../member/member.html">MEMBER</a></li>
-       <li><a href="../history/history.html">HISTORY</a></li>
-        <li><a href="../music/music.html" class="active">MUSIC</a></li>
-        <li><a href="../agenda/agenda.html">AGENDA</a></li>
-        <li><a href="../gallery/gallery.html">GALLERY</a></li>
-        <li><a href="../merch/merch.html">MERCH</a></li>
-         <li><a href="../Booking/booking.html">BOOKING</a></li>
+        <li><a href="../beranda/beranda.php">HOME</a></li>
+        <li><a href="../member/member.php">MEMBER</a></li>
+       <li><a href="../history/history.php">HISTORY</a></li>
+        <li><a href="../music/music.php" class="active">MUSIC</a></li>
+        <li><a href="../agenda/agenda.php">AGENDA</a></li>
+        <li><a href="../gallery/gallery.php">GALLERY</a></li>
+        <li><a href="../merch/merch.php">MERCH</a></li>
+         <li><a href="../Booking/booking.php">BOOKING</a></li>
       </ul>
     </nav>
   </header>
@@ -120,7 +127,7 @@
         <li><a href="#">Member</a></li>
         <li><a href="#">History</a></li>
         <li><a href="#">Agenda</a></li>
-        <li><a href="../gallery/gallery.html">Gallery</a></li>
+        <li><a href="../gallery/gallery.php">Gallery</a></li>
       </ul>
     </div>
   </div>
