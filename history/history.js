@@ -9,3 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// File untuk interaksi JavaScript di halaman history
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('History page loaded');
+    
+    // Tambahkan interaksi tambahan di sini jika diperlukan
+});

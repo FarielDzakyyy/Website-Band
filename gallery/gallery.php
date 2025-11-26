@@ -4,17 +4,85 @@ if (!isset($_SESSION['username'])) {
     header("Location: ../Register dan login/login.php");
     exit;
 }
+
+include 'db.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dua Serupa - Gallery</title>
   <link rel="stylesheet" href="gallery.css" />
-</head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      aspect-ratio: 1 / 1; /* Membuat card persegi sempurna */
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%; /* Gambar memenuhi seluruh card */
+      object-fit: cover; /* Gambar menyesuaikan tanpa terdistorsi */
+      display: block;
+    }
+
+    .gallery-header {
+      text-align: center;
+      padding: 40px 0;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+      color: white;
+    }
+
+    .gallery-header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .gallery-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        padding: 10px;
+      }
+      
+      .gallery-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
 <body>
 
   <!-- Navbar -->
@@ -41,14 +109,29 @@ if (!isset($_SESSION['username'])) {
     <h1>GALLERY</h1>
   </section>
 
-  <!-- Container yang akan diisi otomatis -->
-  <div class="gallery-container" id="galleryContainer">
-    <p style="text-align:center;width:100%;color:#aaa;">Memuat galeri...</p>
+  <!-- Gallery Container -->
+  <div class="gallery-container">
+    <?php
+    $sql = "SELECT image_path FROM gallery ORDER BY id DESC";
+    $result = $conn->query($sql);
+    
+    if ($result && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            echo '<div class="gallery-item">';
+            echo '<img src="' . $row['image_path'] . '" alt="Gallery Photo">';
+            echo '</div>';
+        }
+    } else {
+        echo '<p style="text-align:center; width:100%; color:#666; grid-column:1/-1;">Belum ada foto di galeri.</p>';
+    }
+    $conn->close();
+    ?>
   </div>
 
   <!-- Footer -->
   <footer>
     <div class="footer-container">
+      <!-- Kiri -->
       <div class="footer-left">
         <img src="../kumpulan foto dan icon/logo ds.png" alt="Logo" class="logo" />
         <p>Musik bukan sekadar nada, tapi bahasa jiwa yang sejati adanya.</p>
@@ -56,6 +139,7 @@ if (!isset($_SESSION['username'])) {
         <small>Jl. Garuda No.171A Manukan Condongcatur Depok Sleman Yogyakarta 55283 Indonesia</small>
       </div>
 
+      <!-- Tengah -->
       <div class="footer-center">
         <h4>Follow us</h4>
         <div class="social-icons">
@@ -67,6 +151,7 @@ if (!isset($_SESSION['username'])) {
         <p>085778409829</p>
       </div>
 
+      <!-- Kanan -->
       <div class="footer-right">
         <h4>Tentang kami</h4>
         <ul>
@@ -92,27 +177,5 @@ if (!isset($_SESSION['username'])) {
     </div>
   </footer>
 
-  <script>
-    // Ambil data galeri dari localStorage (yang disimpan di dashboard)
-    document.addEventListener("DOMContentLoaded", () => {
-      const galleryContainer = document.getElementById("galleryContainer");
-      const galleryData = JSON.parse(localStorage.getItem("galleryData")) || [];
-
-      if (galleryData.length === 0) {
-        galleryContainer.innerHTML = `<p style="text-align:center;width:100%;color:#aaa;">Belum ada foto di galeri. Tambahkan dari dashboard admin.</p>`;
-        return;
-      }
-
-      galleryContainer.innerHTML = "";
-      galleryData.forEach(src => {
-        const div = document.createElement("div");
-        div.className = "gallery-item";
-        div.innerHTML = `<img src="${src}" alt="Foto Galeri">`;
-        galleryContainer.appendChild(div);
-      });
-    });
-  </script>
-
 </body>
-
 </html>

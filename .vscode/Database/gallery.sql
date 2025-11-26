@@ -1,0 +1,6 @@
+CREATE TABLE gallery (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image_name VARCHAR(255),
+    image_path VARCHAR(500),
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

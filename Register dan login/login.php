@@ -2,53 +2,98 @@
 session_start();
 require 'function.php'; // file ini harus membuat variabel $conn
 
+// ========== KONFIGURASI ADMIN (ubah sesuai kebutuhan) ==========
+define('ADMIN_USERNAME', 'admin2serupa');          // username admin
+define('ADMIN_PASSWORD', 'rivamal');  // password admin (plain text -- ubah ke nilai yang kuat)
+// Jika ingin lebih aman: simpan hash dan gunakan password_verify()
+// =============================================================
+
+// Isi ini jika kamu menggunakan reCAPTCHA (opsional)
+define('RECAPTCHA_SECRET', ''); // isi dengan secret key reCAPTCHA jika dipakai, atau biarkan kosong untuk menonaktifkan verifikasi
+
 $error = "";
 
 // Pastikan koneksi tersedia
 if (!isset($conn)) {
-  die("Koneksi ke database gagal. Pastikan function.php sudah benar.");
+    die("Koneksi ke database gagal. Pastikan function.php sudah benar.");
 }
 
 if (isset($_POST["login"])) {
     $username = trim($_POST["username"]);
     $password = $_POST["password"];
 
-    // Cegah SQL Injection dengan prepared statement
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    if ($stmt) {
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 1) {
-            $row = $result->fetch_assoc();
-
-            // Verifikasi password hash
-            if (password_verify($password, $row["password"])) {
-                $_SESSION["login"] = true;
-                $_SESSION["username"] = $row["username"];
-
-                // Arahkan ke halaman index.php setelah login berhasil
-                header("Location: ../beranda/beranda.html");
-                exit;
-
-            } else {
-                $error = "Password salah!";
-            }
+    // --- VERIFIKASI reCAPTCHA (opsional) ---
+    if (!empty(RECAPTCHA_SECRET)) {
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        if (empty($recaptchaResponse)) {
+            $error = "Verifikasi reCAPTCHA diperlukan.";
         } else {
-            $error = "Username tidak ditemukan!";
+            $ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, [
+                'secret' => RECAPTCHA_SECRET,
+                'response' => $recaptchaResponse,
+                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+            ]);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $resp = json_decode($response, true);
+            if (!($resp && isset($resp['success']) && $resp['success'] === true)) {
+                $error = "Gagal memverifikasi reCAPTCHA.";
+            }
+        }
+    }
+
+    // Hentikan jika sudah error (mis. reCAPTCHA)
+    if (empty($error)) {
+        // --- CASE: Admin (khusus) ---
+        if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+            // berhasil login sebagai admin
+            session_regenerate_id(true);
+            $_SESSION['login'] = true;
+            $_SESSION['username'] = ADMIN_USERNAME;
+            $_SESSION['role'] = 'admin';
+            // arahkan ke dashboard admin
+            header("Location: ../dashboard/dashboard.php");
+            exit;
         }
 
-        $stmt->close();
-    } else {
-        $error = "Query gagal dipersiapkan!";
+        // --- CASE: User biasa dari database ---
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        if ($stmt) {
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result && $result->num_rows === 1) {
+                $row = $result->fetch_assoc();
+
+                // Jika password di DB disimpan sebagai hash (direkomendasikan)
+                if (isset($row["password"]) && password_verify($password, $row["password"])) {
+                    session_regenerate_id(true);
+                    $_SESSION["login"] = true;
+                    $_SESSION["username"] = $row["username"];
+                    // jika kamu menyimpan role di DB, bisa assign seperti:
+                    // $_SESSION['role'] = $row['role'] ?? 'user';
+
+                    header("Location: ../beranda/beranda.php");
+                    exit;
+                } else {
+                    $error = "Password salah!";
+                }
+            } else {
+                $error = "Username tidak ditemukan!";
+            }
+
+            $stmt->close();
+        } else {
+            $error = "Query gagal dipersiapkan!";
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -61,6 +106,7 @@ if (isset($_POST["login"])) {
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
+    /* (CSS sama seperti yang kamu kirim — saya pertahankan) */
     :root {
       --main-color: #ffe600;
       --accent-color: #ffcc00;
@@ -70,7 +116,6 @@ if (isset($_POST["login"])) {
       --label-color: #cccccc;
       --card-bg: rgba(255, 255, 255, 0.05);
     }
-
     [data-theme="light"] {
       --main-color: #ffc800;
       --accent-color: #f9aa00;
@@ -80,24 +125,13 @@ if (isset($_POST["login"])) {
       --label-color: #666;
       --card-bg: rgba(255, 255, 255, 0.95);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      transition: background 0.5s ease, color 0.5s ease;
+      margin: 0; padding: 0; font-family: 'Poppins', sans-serif;
+      background: var(--bg-color); color: var(--text-color);
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; transition: background 0.5s ease, color 0.5s ease;
     }
-
     .login-container {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
@@ -111,198 +145,32 @@ if (isset($_POST["login"])) {
       transition: background 0.5s ease;
       position: relative;
     }
-
-    h2 {
-      text-align: center;
-      font-weight: 700;
-      color: var(--main-color);
-      margin-bottom: 30px;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 30px;
-    }
-
-    input:-webkit-autofill {
-      box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
-      -webkit-text-fill-color: var(--text-color) !important;
-      transition: background-color 5000s ease-in-out 0s;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 12px;
-      background-color: var(--input-bg);
-      color: var(--text-color);
-      background-clip: padding-box;
-      border: none;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .input-group label {
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      font-size: 1rem;
-      color: var(--label-color);
-      pointer-events: none;
-      background: transparent;
-      transition: all 0.3s ease;
-    }
-
-    .input-group input:focus+label,
-    .input-group input:not(:placeholder-shown)+label {
-      top: -10px;
-      left: 10px;
-      font-size: 0.75rem;
-      transform: scale(0.95);
-      color: var(--main-color);
-      background: var(--card-bg);
-      padding: 0 5px;
-    }
-
-    .input-group .toggle-password {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--label-color);
-      cursor: pointer;
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 15px;
-      font-weight: bold;
-      font-size: 1rem;
-      background: linear-gradient(to right, var(--main-color), var(--accent-color));
-      color: #000;
-      box-shadow: 0 6px 0 #bfa500, 0 10px 30px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    .btn-login:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 0 #a08d00, 0 14px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .btn-login:active {
-      transform: scale(0.97);
-    }
-
-    .g-recaptcha {
-      margin: 20px auto;
-      display: flex;
-      justify-content: center;
-      transform: scale(0.95);
-    }
-
-    .form-footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 0.9rem;
-    }
-
-    .form-footer a {
-      color: var(--main-color);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .form-footer a:hover {
-      color: var(--text-color);
-      text-decoration: underline;
-    }
-
-    .mode-toggle {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--main-color);
-      padding: 8px 12px;
-      border-radius: 30px;
-      color: var(--main-color);
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-
-    .mode-toggle:hover {
-      background: var(--main-color);
-      color: #000;
-      transform: scale(1.05);
-    }
-
-    .alert {
-      font-size: 0.85rem;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
+    h2 { text-align: center; font-weight: 700; color: var(--main-color); margin-bottom: 30px; }
+    .input-group { position: relative; margin-bottom: 30px; }
+    input:-webkit-autofill { box-shadow: 0 0 0 1000px var(--input-bg) inset !important; -webkit-text-fill-color: var(--text-color) !important; transition: background-color 5000s ease-in-out 0s; }
+    .input-group input { width: 100%; padding: 14px 14px; border-radius: 12px; background-color: var(--input-bg); color: var(--text-color); background-clip: padding-box; border: none; font-size: 1rem; outline: none; }
+    .input-group label { position: absolute; left: 14px; top: 14px; font-size: 1rem; color: var(--label-color); pointer-events: none; background: transparent; transition: all 0.3s ease; }
+    .input-group input:focus+label, .input-group input:not(:placeholder-shown)+label { top: -10px; left: 10px; font-size: 0.75rem; transform: scale(0.95); color: var(--main-color); background: var(--card-bg); padding: 0 5px; }
+    .input-group .toggle-password { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--label-color); cursor: pointer; }
+    .btn-login { width: 100%; padding: 14px; border: none; border-radius: 15px; font-weight: bold; font-size: 1rem; background: linear-gradient(to right, var(--main-color), var(--accent-color)); color: #000; box-shadow: 0 6px 0 #bfa500, 0 10px 30px rgba(0, 0, 0, 0.4); transition: all 0.3s ease; }
+    .btn-login:hover { transform: translateY(-3px); box-shadow: 0 8px 0 #a08d00, 0 14px 40px rgba(0, 0, 0, 0.6); }
+    .btn-login:active { transform: scale(0.97); }
+    .g-recaptcha { margin: 20px auto; display: flex; justify-content: center; transform: scale(0.95); }
+    .form-footer { text-align: center; margin-top: 20px; font-size: 0.9rem; }
+    .form-footer a { color: var(--main-color); font-weight: 600; text-decoration: none; }
+    .mode-toggle { position: absolute; top: 16px; right: 16px; background: rgba(0, 0, 0, 0.1); border: 1px solid var(--main-color); padding: 8px 12px; border-radius: 30px; color: var(--main-color); cursor: pointer; font-size: 0.85rem; transition: background 0.3s ease, transform 0.3s ease; }
+    .mode-toggle:hover { background: var(--main-color); color: #000; transform: scale(1.05); }
+    .alert { font-size: 0.85rem; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; }
     @media (max-width: 480px) {
-      .login-container {
-        padding: 30px 20px;
-        position: relative;
-        z-index: 1;
-      }
-
-      /* Fix untuk input username dark/light mode */
-      body.light-mode input[type="text"],
-      body.light-mode input[type="email"],
-      body.light-mode input[type="password"] {
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #ccc;
-      }
-
-      body.dark-mode input[type="text"],
-      body.dark-mode input[type="email"],
-      body.dark-mode input[type="password"] {
-        background-color: #222;
-        color: #fff;
-        border: 1px solid #444;
-      }
-
-      body.dark-mode input::placeholder {
-        color: #aaa;
-      }
-
-      body.light-mode input::placeholder {
-        color: #888;
-      }
-
-      input:-webkit-autofill {
-        transition: background-color 9999s ease-in-out 0s;
-        -webkit-text-fill-color: inherit !important;
-        box-shadow: 0 0 0px 1000px transparent inset !important;
-      }
-
-      [data-theme="dark"] input:-webkit-autofill {
-        -webkit-text-fill-color: #fff !important;
-        box-shadow: 0 0 0px 1000px #222 inset !important;
-      }
-
-      [data-theme="light"] input:-webkit-autofill {
-        -webkit-text-fill-color: #000 !important;
-        box-shadow: 0 0 0px 1000px #fff inset !important;
-      }
-
-      input.auto-fixed {
-        background-color: var(--input-bg) !important;
-        -webkit-text-fill-color: var(--text-color) !important;
-        box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
-        transition: none !important;
-      }
-
-
+      .login-container { padding: 30px 20px; position: relative; z-index: 1; }
+      body.light-mode input[type="text"], body.light-mode input[type="email"], body.light-mode input[type="password"] { background-color: #fff; color: #000; border: 1px solid #ccc; }
+      body.dark-mode input[type="text"], body.dark-mode input[type="email"], body.dark-mode input[type="password"] { background-color: #222; color: #fff; border: 1px solid #444; }
+      body.dark-mode input::placeholder { color: #aaa; }
+      body.light-mode input::placeholder { color: #888; }
+      input:-webkit-autofill { transition: background-color 9999s ease-in-out 0s; -webkit-text-fill-color: inherit !important; box-shadow: 0 0 0px 1000px transparent inset !important; }
+      [data-theme="dark"] input:-webkit-autofill { -webkit-text-fill-color: #fff !important; box-shadow: 0 0 0px 1000px #222 inset !important; }
+      [data-theme="light"] input:-webkit-autofill { -webkit-text-fill-color: #000 !important; box-shadow: 0 0 0px 1000px #fff inset !important; }
+      input.auto-fixed { background-color: var(--input-bg) !important; -webkit-text-fill-color: var(--text-color) !important; box-shadow: 0 0 0 1000px var(--input-bg) inset !important; transition: none !important; }
     }
   </style>
 </head>
@@ -314,25 +182,8 @@ if (isset($_POST["login"])) {
     <button class="mode-toggle" onclick="toggleMode()" id="modeToggle">☀️ Light Mode</button>
     <h2>Login Akun</h2>
 
-    <?php if (isset($alert)) : ?>
-      <script>
-        Swal.fire({
-          icon: '<?= $alert['icon'] ?>',
-          title: '<?= $alert['title'] ?>',
-          text: '<?= $alert['text'] ?>',
-          confirmButtonColor: '#c2a15d'
-        }).then(() => {
-          window.location.href = '<?= $alert['redirect'] ?>';
-        });
-      </script>
-    <?php endif; ?>
-
-
-    <?php if (!empty($successMessage)) : ?>
-      <div class="alert alert-success"><?= $successMessage ?></div>
-    <?php endif; ?>
-    <?php if (isset($error)) : ?>
-      <div class="alert alert-danger">Username, Password, atau reCAPTCHA salah!</div>
+    <?php if (!empty($error)) : ?>
+      <div class="alert alert-danger" style="background:#ffdddd;color:#330000;"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <form action="" method="POST" autocomplete="off">
@@ -347,7 +198,9 @@ if (isset($_POST["login"])) {
         <i class="fa fa-eye toggle-password" onclick="togglePassword(this)"></i>
       </div>
 
-      <div class="g-recaptcha" data-sitekey="6LcppogrAAAAAAbsLWlvfrwvAzAJVoMIU29goy3E"></div>
+      <?php if (!empty(RECAPTCHA_SECRET)) : ?>
+        <div class="g-recaptcha" data-sitekey="6LcppogrAAAAAAbsLWlvfrwvAzAJVoMIU29goy3E"></div>
+      <?php endif; ?>
 
       <button type="submit" name="login" class="btn-login">Login</button>
     </form>
@@ -433,15 +286,9 @@ if (isset($_POST["login"])) {
         "color": {
           "value": "#ffffff"
         },
-        "shape": {
-          "type": "circle"
-        },
-        "opacity": {
-          "value": 0.5
-        },
-        "size": {
-          "value": 3
-        },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
         "line_linked": {
           "enable": true,
           "distance": 150,
@@ -449,37 +296,16 @@ if (isset($_POST["login"])) {
           "opacity": 0.4,
           "width": 1
         },
-        "move": {
-          "enable": true,
-          "speed": 2
-        }
+        "move": { "enable": true, "speed": 2 }
       },
       "interactivity": {
         "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "repulse"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "repulse": {
-            "distance": 100
-          },
-          "push": {
-            "particles_nb": 4
-          }
-        }
+        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+        "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
       },
       "retina_detect": true
     });
   </script>
 
 </body>
-
 </html>

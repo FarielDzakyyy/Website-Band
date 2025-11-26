@@ -4,7 +4,47 @@ if (!isset($_SESSION['username'])) {
     header("Location: ../Register dan login/login.php");
     exit;
 }
+
+// Koneksi database
+require_once 'db.php';
+
+// Ambil data dari database dengan error handling
+$history = null;
+try {
+    $query = "SELECT image, intro, content FROM history ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($conn, $query);
+    if ($result) {
+        $history = mysqli_fetch_assoc($result);
+    }
+} catch (Exception $e) {
+    // Jika error, buat tabel otomatis
+    createHistoryTable($conn);
+}
+
+// Fungsi untuk membuat tabel jika tidak ada
+function createHistoryTable($conn) {
+    $createTableQuery = "
+        CREATE TABLE IF NOT EXISTS history (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            image LONGTEXT,
+            intro TEXT,
+            content TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    ";
+    
+    if (mysqli_query($conn, $createTableQuery)) {
+        // Tabel berhasil dibuat, coba query lagi
+        $query = "SELECT image, intro, content FROM history ORDER BY id DESC LIMIT 1";
+        $result = mysqli_query($conn, $query);
+        if ($result) {
+            $GLOBALS['history'] = mysqli_fetch_assoc($result);
+        }
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -40,19 +80,31 @@ if (!isset($_SESSION['username'])) {
   </section>
 
   <div class="history-img" id="history-img-container">
-    <img id="history-image" src="../kumpulan foto dan icon/Foto band.jpg" alt="Dua Serupa Band"><br>
-    <p id="history-intro"><span class="orange">Sejarah</span> singkat perjalanan kami dari awal hingga <span class="blue">sekarang.</span></p>
+    <img id="history-image" 
+         src="<?php echo (isset($history['image']) && !empty($history['image'])) ? $history['image'] : '../kumpulan foto dan icon/Foto band.jpg'; ?>" 
+         alt="Dua Serupa Band"><br>
+    <p id="history-intro">
+      <?php 
+      if (isset($history['intro']) && !empty($history['intro'])) {
+          echo htmlspecialchars($history['intro']);
+      } else {
+          echo '<span class="orange">Sejarah</span> singkat perjalanan kami dari awal hingga <span class="blue">sekarang.</span>';
+      }
+      ?>
+    </p>
   </div>
     
   <div class="history-text" id="history-text-container">
     <p id="history-content">
-      DUA SERUPA lahir pada tanggal 18 Desember 2022 di Semarang. Band ini awalnya dibentuk oleh lima remaja dengan talenta musik sejak SMA. 
-      Nama DUA SERUPA terinspirasi dari ciri khas awal band yang menampilkan formasi unik dengan dua pasang anak kembar.
+      <?php
+      if (isset($history['content']) && !empty($history['content'])) {
+          echo nl2br(htmlspecialchars($history['content']));
+      } else {
+          echo "DUA SERUPA lahir pada tanggal 18 Desember 2022 di Semarang. Band ini awalnya dibentuk oleh lima remaja dengan talenta musik sejak SMA. 
+          Nama DUA SERUPA terinspirasi dari ciri khas awal band yang menampilkan formasi unik dengan dua pasang anak kembar.";
+      }
+      ?>
     </p>
-
-    <ul id="history-list">
-      
-    </ul>
     
     <br>
   </div>
@@ -96,7 +148,7 @@ if (!isset($_SESSION['username'])) {
           <li><a href="#">Member</a></li>
           <li><a href="#">History</a></li>
           <li><a href="#">Agenda</a></li>
-        <li><a href="../gallery/gallery.php">Gallery</a></li>
+          <li><a href="../gallery/gallery.php">Gallery</a></li>
         </ul>
       </div>
     </div>
@@ -105,39 +157,6 @@ if (!isset($_SESSION['username'])) {
       <p>© 2025 Semua Hak Dilindungi</p>
     </div>
   </footer>
-
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const historyData = JSON.parse(localStorage.getItem("historyData"));
-
-    if (historyData) {
-      // Gambar
-      const imgEl = document.getElementById("history-image");
-      if (historyData.image) {
-        imgEl.src = historyData.image;
-      }
-
-      // Kalimat pembuka
-      const introEl = document.getElementById("history-intro");
-      if (historyData.intro && historyData.intro.trim() !== "") {
-        introEl.textContent = historyData.intro;
-      }
-
-      // Isi sejarah
-      const contentEl = document.getElementById("history-content");
-      if (historyData.content && historyData.content.trim() !== "") {
-        contentEl.textContent = historyData.content;
-      }
-
-      // Daftar anggota
-      const listEl = document.getElementById("history-list");
-      if (historyData.list && historyData.list.trim() !== "") {
-        const members = historyData.list.split("\n").map(line => line.trim()).filter(l => l !== "");
-        listEl.innerHTML = members.map(m => `<li>${m}</li>`).join("");
-      }
-    }
-  });
-  </script>
 
 </body>
 </html>

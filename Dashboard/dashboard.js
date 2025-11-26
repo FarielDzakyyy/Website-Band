@@ -11,3 +11,5 @@ document.querySelector(".logout").addEventListener("click", () => {
     window.location.href = "../beranda/beranda.html";
   }
 });
+
+

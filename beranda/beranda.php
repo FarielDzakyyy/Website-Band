@@ -1,10 +1,38 @@
 <?php 
 session_start(); 
-if (!isset($_SESSION['username'])) { 
+// Jika halaman ini bisa diakses publik tanpa login, baris check session di bawah bisa dihapus/dikomentari
+/* if (!isset($_SESSION['username'])) { 
     header("Location: ../Register dan login/login.php"); 
     exit; 
 } 
+*/
+
+require_once 'db.php';
+
+// --- FUNGSI HELPER UNTUK MENCEGAH ERROR UNDEFINED ---
+function getVal($arr, $key, $default = '') {
+    return isset($arr[$key]) && !empty($arr[$key]) ? htmlspecialchars($arr[$key]) : $default;
+}
+
+// Ambil data dari database
+$sql = "SELECT * FROM beranda";
+$result = $conn->query($sql);
+
+$berandaData = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $berandaData[$row['section_type']] = $row;
+    }
+}
+
+// Inisialisasi variabel section dengan data default kosong jika DB kosong
+$hero = $berandaData['hero'] ?? [];
+$gallery = $berandaData['gallery'] ?? [];
+$history = $berandaData['history'] ?? [];
+$news = $berandaData['news'] ?? [];
+$merch = $berandaData['merch'] ?? [];
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,112 +42,146 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="beranda.css">
 </head>
 <body>
-    <!-- Navbar -->
     <header>
         <nav class="navbar">
             <div class="logo">
                 <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa Logo" class="logo-img">
             </div>
             <ul class="nav-links">
-                <li><a href="../beranda/beranda.html" class="active">HOME</a></li>
-                <li><a href="../member/member.html">MEMBER</a></li>
-                <li><a href="../history/history.html">HISTORY</a></li>
-                <li><a href="../music/music.html">MUSIC</a></li>
-                <li><a href="../agenda/agenda.html">AGENDA</a></li>
-                <li><a href="../gallery/gallery.html">GALLERY</a></li>
-                <li><a href="../merch/merch.html">MERCH</a></li>
-                <li><a href="../Booking/booking.html">BOOKING</a></li>
+                <li><a href="../beranda/beranda.php" class="active">HOME</a></li>
+                <li><a href="../member/member.php">MEMBER</a></li>
+                <li><a href="../history/history.php">HISTORY</a></li>
+                <li><a href="../music/music.php">MUSIC</a></li>
+                <li><a href="../agenda/agenda.php">AGENDA</a></li>
+                <li><a href="../gallery/gallery.php">GALLERY</a></li>
+                <li><a href="../merch/merch.php">MERCH</a></li>
+                <li><a href="../Booking/booking.php">BOOKING</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <?php 
+        // Logic gambar: Prioritas gambar DB, fallback ke default
+        $heroBg = !empty($hero['image']) ? $hero['image'] : '../kumpulan foto dan icon/Foto band.jpg';
+    ?>
+    <section class="hero" style="background-image: url('<?= $heroBg ?>'); background-size: cover; background-position: center;">
         <div class="hero-text">
-            <h1>Selamat datang,<br>di official website Dua Serupa</h1>
-            <p>Hi DS Lovers, dapatkan informasi official paling up to date dari Dua Serupa hanya disini</p>
-            <a href="../agenda/agenda.html" class="btn">AGENDA EVENT</a>
+            <h1><?= getVal($hero, 'title', 'Selamat datang,<br>di official website Dua Serupa') ?></h1>
+            <p><?= getVal($hero, 'content', 'Hi DS Lovers, dapatkan informasi official paling up to date dari Dua Serupa hanya disini') ?></p>
+            <a href="<?= !empty($hero['button_link']) ? $hero['button_link'] : '../agenda/agenda.php' ?>" class="btn">
+                <?= getVal($hero, 'button_text', 'AGENDA EVENT') ?>
+            </a>
         </div>
     </section>
 
-    <!-- Gallery -->
     <section class="gallery">
-        <h2>GALLERY</h2>
+        <h2><?= getVal($gallery, 'title', 'GALLERY') ?></h2>
         <div class="gallery-container">
-            <img src="../kumpulan foto dan icon/Foto band.jpg" alt="Gallery 1">
-            <img src="../kumpulan foto dan icon/Foto band.jpg" alt="Gallery 2">
-            <img src="../kumpulan foto dan icon/Foto band.jpg" alt="Gallery 3">
+            <?php
+            $displayedImages = 0;
+            
+            // Decode JSON Gallery
+            if (!empty($gallery['gallery_images'])) {
+                $galleryImages = json_decode($gallery['gallery_images'], true);
+                
+                // Pastikan hasil decode adalah array yang valid
+                if (is_array($galleryImages) && count($galleryImages) > 0) {
+                    foreach ($galleryImages as $image) {
+                        if ($displayedImages < 3) {
+                            // Pastikan path gambar valid
+                            echo '<img src="' . htmlspecialchars($image) . '" alt="Gallery Image" style="object-fit:cover;">';
+                            $displayedImages++;
+                        }
+                    }
+                }
+            }
+            
+            // Tampilkan gambar default jika user belum upload gambar gallery
+            while ($displayedImages < 3) {
+                echo '<img src="../kumpulan foto dan icon/Foto band.jpg" alt="Gallery Default">';
+                $displayedImages++;
+            }
+            ?>
         </div>
     </section>
 
-    <!-- History -->
     <section class="history">
-        <h2>HISTORY</h2>
-        <p>
-            Dua Serupa yang sekarang adalah Band of Eross (guitar), Duta (vocal), Adam (bass). “B.E.D.A.” Well, they are.. different :)
-        </p>
-        <p>
-            Berawal dari Adam dan Sakti yang memiliki band bernama “W.H.Y Gank” mengajak Duta ikut latihan band mereka untuk menjadi vokalis. Duta dipilih berbekal cerita Adam bahwa Adam dan Duta merupakan langganan pengisi acara 17 Agustus-an di komplek perumahan mereka, Duta menyanyi dan Adam bermain gitar akustik.
-        </p>
-        <a href="../history/history.html" class="more">Baca Selengkapnya &gt;</a>
+        <h2><?= getVal($history, 'title', 'HISTORY') ?></h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <p>
+                <?= !empty($history['content']) ? nl2br(htmlspecialchars($history['content'])) : 'Dua Serupa yang sekarang adalah Band of Eross (guitar), Duta (vocal), Adam (bass). "B.E.D.A." Well, they are.. different :)' ?>
+            </p>
+        </div>
+        <?php if (!empty($history['button_link'])): ?>
+            <br>
+            <a href="<?= $history['button_link'] ?>" class="more">Baca Selengkapnya &gt;</a>
+        <?php endif; ?>
     </section>
 
-    <!-- Booking -->
     <section class="events">
         <h2>Booking</h2>
-        <a href="../booking/booking.html" class="btn">Booking</a>
+        <a href="../booking/booking.php" class="btn">Booking</a>
     </section>
 
-    <!-- News Update -->
     <section class="news">
-        <h2>NEWS UPDATE</h2>
+        <h2><?= getVal($news, 'title', 'NEWS UPDATE') ?></h2>
         <div class="news-container">
             <div class="main-news">
-                <img src="../kumpulan foto dan icon/Foto band.jpg" alt="News Main">
-                <p>Dua Serupa Bagikan Kisah Memori Baik</p>
+                <?php $newsImg = !empty($news['image']) ? $news['image'] : '../kumpulan foto dan icon/Foto band.jpg'; ?>
+                <img src="<?= $newsImg ?>" alt="News Main">
+                <p><?= getVal($news, 'content', 'Dua Serupa Bagikan Kisah Memori Baik') ?></p>
             </div>
             <div class="side-news">
                 <div class="news-item">
                     <img src="../kumpulan foto dan icon/Foto band.jpg" alt="News 1">
-                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul “DREAMER”</p>
+                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul "DREAMER"</p>
                 </div>
                 <div class="news-item">
                     <img src="../kumpulan foto dan icon/Foto band.jpg" alt="News 2">
-                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul “DREAMER”</p>
+                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul "DREAMER"</p>
                 </div>
                 <div class="news-item">
                     <img src="../kumpulan foto dan icon/Foto band.jpg" alt="News 3">
-                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul “DREAMER”</p>
+                    <p>DUA SERUPA Telah merilis singel ke-3 berjudul "DREAMER"</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Merch -->
     <section class="merch">
         <div class="merch-left">
-            <img src="../kumpulan foto dan icon/logo ds.png" alt="Dua Serupa Logo">
+            <?php $merchImg = !empty($merch['image']) ? $merch['image'] : '../kumpulan foto dan icon/logo ds.png'; ?>
+            <img src="<?= $merchImg ?>" alt="Merch Image">
         </div>
         <div class="merch-right">
-            <h2>Official Merch</h2>
-            <p>Official Merchandise Dua Serupa hanya bisa didapatkan melalui official website kami.</p>
-            <p>Jaminan 100% Original Merchandise</p>
-            <p>- Dua Serupa</p>
+            <h2><?= getVal($merch, 'title', 'Official Merch') ?></h2>
+            <?php
+            if (!empty($merch['content'])) {
+                $lines = explode("\n", $merch['content']);
+                foreach ($lines as $line) {
+                    if (!empty(trim($line))) {
+                        echo '<p>' . htmlspecialchars($line) . '</p>';
+                    }
+                }
+            } else {
+                echo '
+                    <p>Official Merchandise Dua Serupa hanya bisa didapatkan melalui official website kami.</p>
+                    <p>Jaminan 100% Original Merchandise</p>
+                    <p>- Dua Serupa</p>
+                ';
+            }
+            ?>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-container">
-            <!-- Kiri -->
             <div class="footer-left">
                 <img src="../kumpulan foto dan icon/logo ds.png" alt="Logo" class="logo" />
-                <p>Musik bukan sekadar nada, tapi bahasa jiwa yang sejati adanya.</p>
+                <p>Musik bukan sekadar nada,tapi bahasa jiwa yang sejati adanya.</p>
                 <hr />
                 <small>Jl. Garuda No.171A Manukan Condongcatur Depok Sleman Yogyakarta 55283 Indonesia</small>
             </div>
-
-            <!-- Tengah -->
             <div class="footer-center">
                 <h4>Follow us</h4>
                 <div class="social-icons">
@@ -130,90 +192,19 @@ if (!isset($_SESSION['username'])) {
                 <h4>Call us</h4>
                 <p>085778409829</p>
             </div>
-
-            <!-- Kanan -->
             <div class="footer-right">
                 <h4>Tentang kami</h4>
                 <ul>
-                    <li><a href="#">History</a></li>
-                    <li><a href="#">Member</a></li>
-                    <li><a href="#">Music</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-right">
-                <h4>Fitur</h4>
-                <ul>
-                    <li><a href="../member/member.html">Member</a></li>
-                    <li><a href="../history/history.html">History</a></li>
-                    <li><a href="#">Agenda</a></li>
-                    <li><a href="../gallery/gallery.html">Gallery</a></li>
+                    <li><a href="../history/history.php">History</a></li>
+                    <li><a href="../member/member.php">Member</a></li>
+                    <li><a href="../music/music.php">Music</a></li>
                 </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>© 2025 Semua Hak Dilindungi</p>
         </div>
     </footer>
-
-    <script src="beranda.js" defer></script>
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // Hero
-  const heroImage = localStorage.getItem("heroImage");
-  const judul = localStorage.getItem("judulHero");
-  const deskripsi = localStorage.getItem("deskripsiHero");
-  const ctaText = localStorage.getItem("ctaText");
-  const ctaLink = localStorage.getItem("ctaLink");
-
-  if (heroImage) document.querySelector(".hero").style.backgroundImage = `url(${heroImage})`;
-  if (judul) document.querySelector(".hero-text h1").innerText = judul;
-  if (deskripsi) document.querySelector(".hero-text p").innerText = deskripsi;
-  if (ctaText) document.querySelector(".hero-text a").innerText = ctaText;
-  if (ctaLink) document.querySelector(".hero-text a").href = ctaLink;
-
-  // Gallery
-  const galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
-  const galleryContainer = document.querySelector(".gallery-container");
-  if (galleryContainer && galleryData.length > 0) {
-    galleryContainer.innerHTML = "";
-    galleryData.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      galleryContainer.appendChild(img);
-    });
-  }
-
-  // History
-  const historyData = localStorage.getItem("bandHistory");
-  if (historyData) document.querySelector(".history p").innerText = historyData;
-
-  // News
-  const newsTitle = localStorage.getItem("newsTitle");
-  const newsContent = localStorage.getItem("newsContent");
-  const newsImage = localStorage.getItem("newsImage");
-  if (newsTitle && document.querySelector(".main-news p")) {
-    document.querySelector(".main-news p").innerText = newsTitle;
-  }
-  if (newsImage && document.querySelector(".main-news img")) {
-    document.querySelector(".main-news img").src = newsImage;
-  }
-});
-
-// Merchandise
-const merchImage = localStorage.getItem("merchImage");
-const merchTitle = localStorage.getItem("merchTitle");
-const merchDesc1 = localStorage.getItem("merchDesc1");
-const merchDesc2 = localStorage.getItem("merchDesc2");
-const merchDesc3 = localStorage.getItem("merchDesc3");
-
-if (merchImage) document.querySelector(".merch-left img").src = merchImage;
-if (merchTitle) document.querySelector(".merch-right h2").innerText = merchTitle;
-if (merchDesc1) document.querySelectorAll(".merch-right p")[0].innerText = merchDesc1;
-if (merchDesc2) document.querySelectorAll(".merch-right p")[1].innerText = merchDesc2;
-if (merchDesc3) document.querySelectorAll(".merch-right p")[2].innerText = merchDesc3;
-</script>
-
 </body>
 </html>
+<?php $conn->close(); ?>

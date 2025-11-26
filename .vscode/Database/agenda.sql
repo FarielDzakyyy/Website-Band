@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS agenda (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tanggal DATE,
+    judul_acara VARCHAR(255),
+    lokasi VARCHAR(255),
+    gambar LONGTEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

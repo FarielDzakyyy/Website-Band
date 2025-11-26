@@ -90,15 +90,15 @@ body {
 
 /* Kartu anggota */
 .member-card {
-  width: 200px; /* Slightly wider to accommodate icon next to photo */
+  width: 300px; /* Slightly wider to accommodate icon next to photo */
   text-align: center;
   position: relative; /* For absolute positioning of instrument icon */
 }
 
 .member-visual {
   position: relative;
-  width: 160px; /* Same as photo size */
-  height: 160px;
+  width: 200px; /* Same as photo size */
+  height: 200px;
   margin: 0 auto; /* Center the visual container */
 }
 
@@ -107,7 +107,7 @@ body {
   width: 160px;
   height: 160px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: #111;
   border: 5px solid #b88965;
   transition: transform 0.3s ease, box-shadow 0.3s ease;

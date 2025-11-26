@@ -4,6 +4,8 @@ if (!isset($_SESSION['username'])) {
     header("Location: ../Register dan login/login.php");
     exit;
 }
+
+require_once 'db.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -13,6 +15,60 @@ if (!isset($_SESSION['username'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dua Serupa - Merchandise</title>
   <link rel="stylesheet" href="merch.css" />
+  <style>
+    .merch-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      padding: 30px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .merch-card {
+      background: #2b2b2b;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+      border: 1px solid #444;
+    }
+
+    .merch-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .merch-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #555;
+    }
+
+    .merch-card h3 {
+      color: #fff;
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+
+    .merch-card p {
+      color: #d6792f;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+      .merch-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px 15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -42,7 +98,30 @@ if (!isset($_SESSION['username'])) {
   </section>
 
   <div class="merch-container" id="merchContainer">
-    <!-- Konten akan dimuat otomatis dari localStorage -->
+    <?php
+    $sql = "SELECT id, name, price, image FROM merchandise ORDER BY id DESC";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $imageSrc = $row['image'] ?: '../kumpulan foto dan icon/default.jpg';
+            $price = number_format($row['price'], 0, ',', '.');
+            
+            echo "
+            <div class='merch-card'>
+              <img src='{$imageSrc}' alt='{$row['name']}' class='merch-img'>
+              <h3>{$row['name']}</h3>
+              <p>Rp {$price}</p>
+            </div>";
+        }
+    } else {
+        echo '<p style="color:#ccc;text-align:center;grid-column:1/-1;margin-top:40px;font-size:1.1em;">
+                Belum ada merchandise tersedia.
+              </p>';
+    }
+    
+    $conn->close();
+    ?>
   </div>
 
   <!-- Footer -->
@@ -93,30 +172,6 @@ if (!isset($_SESSION['username'])) {
       <p>© 2025 Semua Hak Dilindungi</p>
     </div>
   </footer>
-
-  <!-- Script Merchandise Dinamis -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const merchContainer = document.getElementById("merchContainer");
-      const merchData = JSON.parse(localStorage.getItem("merchData")) || [];
-
-      if (merchData.length === 0) {
-        merchContainer.innerHTML = `
-          <p style="color:#ccc;text-align:center;margin-top:40px;">
-            Belum ada merchandise tersedia.
-          </p>`;
-        return;
-      }
-
-      merchContainer.innerHTML = merchData.map(m => `
-        <div class="merch-card">
-          <img src="${m.image || '../kumpulan foto dan icon/default.jpg'}" alt="${m.name}" class="merch-img">
-          <h3>${m.name}</h3>
-          <p>Rp ${parseInt(m.price || 0).toLocaleString("id-ID")}</p>
-        </div>
-      `).join("");
-    });
-  </script>
 
 </body>
 </html>

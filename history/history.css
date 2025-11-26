@@ -15,12 +15,12 @@ body {
 /* History Section */
 .history-header {
   text-align: center;
-  background: none;       /* hapus background coklat */
+  background: none;
   padding: 5px 20px;
   border-radius: 8px;
   margin: 9px auto 40px auto;
   max-width: 1630px;
-  color: #e9e5e3;         /* ubah warna teks jadi coklat */
+  color: #e9e5e3;
 }
 
 .history-header h1 {
@@ -28,49 +28,46 @@ body {
   margin-bottom: 10px;
 }
 
-.history-header p {
-  font-size: 1.2em;
-  margin-bottom: 40px;
-}
-
 /* Warna kata khusus */
-.history-header .orange {
-  color: #e9e5e3;   /* coklat lembut */
+.orange { 
+  color: #e9e5e3;
+  font-weight: 600;
 }
 
-.history-header .blue {
-  color: #e9e5e3;   /* samakan agar konsisten */
+.blue { 
+  color: #e9e5e3;
+  font-weight: 600;
 }
 
-
+/* History Image Styles - DIHAPUS SEMUA YANG MEMAKSA UKURAN */
 .history-img {
   text-align: center;
   margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.history-img img {
-  width: 39%;            /* atur agar lebih kecil dari lebar layar */
-  max-width: 800px;      /* batasi ukuran maksimum */
-  border-radius: 15px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+/* HAPUS SEMUA STYLING UNTUK IMG DI SINI - biarkan inline style yang bekerja */
+#history-intro {
+  margin-top: 25px;
+  font-size: 1.3em;
+  color: #e9e5e3;
+  text-align: center;
+  max-width: 800px;
+  line-height: 1.6;
 }
-
 
 .history-text {
-  width: 90%;              /* tidak selebar layar penuh */
-  margin-left: 5%;        /* geser sedikit ke tengah */
- /* text-align: justify;     /* biar rapi kiri-kanan */
+  width: 90%;
+  margin-left: 5%;
   font-size: 1.05em;
   line-height: 1.8;
   color: #ebe5e5;
-  padding: 0 20px 60px;    /* jarak dalam teks */
+  padding: 0 20px 60px;
+  text-align: justify;
 }
-
-.history-text ul {
-  margin: 15px 0 25px 40px;
-}
-
-
 
 /* Navbar */
 .navbar {
@@ -100,72 +97,12 @@ body {
   border-radius: 4px;
 }
 
-
-
 .logo-img {
-    height: 55px; /* Logo lebih besar, navbar tetap */
-    /* Jika perlu, tambahkan vertical-align agar logo tetap rata tengah */
-    vertical-align: middle;
+  height: 55px;
+  vertical-align: middle;
 }
 
-footer {
-    background-color: #fff;
-    padding: 40px;
-    font-size: 0.95em;
-    color: #222;
-    border-top: 1px solid #eee;
-}
-
-.footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    max-width: 1200px;
-    margin: auto;
-}
-
-.footer-left {
-    flex: 2;
-    min-width: 250px;
-}
-
-.footer-left .footer-logo {
-    width: 40px;
-    margin-bottom: 10px;
-}
-
-.footer-left hr {
-    margin: 15px 0;
-    border: none;
-    border-top: 1px solid #aaa;
-    width: 60%;
-}
-
-.footer-center {
-    flex: 1.2;
-    min-width: 200px;
-}
-
-.footer-center h4 {
-    margin-bottom: 10px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.social-icons img {
-    width: 28px;
-    height: 28px;
-    background-color: #efece7;
-    padding: 6px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
+/* Footer */
 footer {
   background: #222;
   color: #fff;
@@ -273,3 +210,42 @@ footer {
   color: #ede8e8;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .history-text {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+  
+  .navbar {
+    padding: 15px 20px;
+  }
+  
+  .nav-links {
+    gap: 10px;
+  }
+  
+  footer {
+    padding: 20px;
+  }
+  
+  #history-intro {
+    font-size: 1em;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .history-header h1 {
+    font-size: 2em;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #history-intro {
+    font-size: 0.9em;
+  }
+}
